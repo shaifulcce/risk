@@ -38,36 +38,38 @@ server {
 	#
 	# include snippets/snakeoil.conf;
 
-	root /var/www/html;
+	root /var/www/dev.risktalk.com.au/;
+    	index  index.php index.html index.htm;
+    	server_name  dev.risktalk.com.au;
 
-	# Add index.php to the list if you are using PHP
-	index index.html index.htm index.nginx-debian.html;
+    	client_max_body_size 500M;
 
-	server_name _;
+    	location / {
+        	try_files $uri $uri/ /index.php?$args;
+    	}
 
-	location / {
-		# First attempt to serve request as file, then
-		# as directory, then fall back to displaying a 404.
-		try_files $uri $uri/ =404;
-	}
+    	location = /favicon.ico {
+        	log_not_found off;
+        	access_log off;
+    	}
 
-	# pass PHP scripts to FastCGI server
-	#
-	#location ~ \.php$ {
-	#	include snippets/fastcgi-php.conf;
-	#
-	#	# With php-fpm (or other unix sockets):
-	#	fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-	#	# With php-cgi (or other tcp sockets):
-	#	fastcgi_pass 127.0.0.1:9000;
-	#}
+    	location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        	expires max;
+        	log_not_found off;
+    	}
 
-	# deny access to .htaccess files, if Apache's document root
-	# concurs with nginx's one
-	#
-	#location ~ /\.ht {
-	#	deny all;
-	#}
+    	location = /robots.txt {
+       		allow all;
+        	log_not_found off;
+        	access_log off;
+    	}
+
+    	location ~ \.php$ {
+         	include snippets/fastcgi-php.conf;
+         	fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+         	fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         	include fastcgi_params;
+    	}
 }
 
 
