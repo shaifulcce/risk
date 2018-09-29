@@ -38,9 +38,9 @@ server {
 	#
 	# include snippets/snakeoil.conf;
 
-	root /var/www/dev.risktalk.com.au/;
+	root /var/www/risktalk.com.au/;
     	index  index.php index.html index.htm;
-    	server_name  dev.risktalk.com.au;
+    	server_name  risktalk.com.au www.risktalk.com.au;
 
     	client_max_body_size 500M;
 
